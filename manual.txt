@@ -1,0 +1,75 @@
+Created by Juliusz Jakobowski.  Released under MIT License
+
+
+SUMMARY:
+A command line mathematical expression evaluator and calculator.  
+Accepts natural infix mathematical input, including support for functions and implicit multiplication.  
+Is able to distinguish unary negation and binary subtraction.
+
+
+EVALUATING EXPRESSIONS:
+Enter a mathematical expression after the "> " symbol.  The result will appear below it.  
+Ex:
+> 5+5
+  10.000000
+
+Spaces will be ignored unless there is no operator between two values, in which case they are implicity multiplied
+Implicit multiplication will also be performed if a parenthesis separates two values
+Ex:
+> 5.0 + 5.0
+  10.000000
+
+> 5 5
+  25.000000
+
+> 5(-5)
+  -25.000000
+
+Program follows order of operations (note that spaces here are used purely for visual clarity).
+Ex: 
+> 5^3.1^0.2 + 39.2^2 / (2(200-100))
+  15.207352
+
+A variety of functions are supported (see "SUPPORTED FUNCTIONS" section below).
+Note that parentheses for single-argument functions are entirely optional.
+Ex:
+> sin 2
+  0.909297
+
+> sin(2)
+  0.909297
+
+
+CLOSE PROGRAM:
+Enter "quit" to close the program.
+Ex: 
+> quit
+
+
+SUPPORTED OPERATIONS:
+1 + 2        Addition
+1 - 2        Subtraction
+- 1          Negation
+1 * 2        Multiplication
+1 / 2        Division
+1 ^ 2        Exponentiation
+
+
+SUPPORTED FUNCTIONS:
+idiv(1, 2)   Integer division (1 is divided by 2)
+mod(1, 2)    Modulo (remainder of 1 divided by 2)
+log(1, 2)    Logarithm (logarithm of 2, base 1) 
+root(1, 2)   Root (root order 1 of 2)
+sin(1)       Sine (Sine of 1 radian)
+
+
+ERRORS:
+"unrecognized token:"
+  One or more unrecognized symbols or words were encountered.  The first of these is shown after the colon.
+  Note that a maximum of five sequential characters can constitute a token
+
+"overflow error"
+  The input was too long, or resulted in too many operations or variables
+
+"syntax error"
+  All tokens were recognized, but one or more were used incorrectly
