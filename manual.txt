@@ -2,74 +2,119 @@ Created by Juliusz Jakobowski.  Released under MIT License
 
 
 SUMMARY:
-A command line mathematical expression evaluator and calculator.  
-Accepts natural infix mathematical input, including support for functions and implicit multiplication.  
-Is able to distinguish unary negation and binary subtraction.
+	A command line mathematical expression evaluator and calculator.  
+	Accepts natural infix mathematical input, including support for functions and implicit multiplication.  
+	Is able to distinguish unary negation and binary subtraction.
 
 
 EVALUATING EXPRESSIONS:
-Enter a mathematical expression after the "> " symbol.  The result will appear below it.  
-Ex:
-> 5+5
-  10.000000
+	Enter a mathematical expression after the "> " symbol.  The result will appear below it.  
+	Ex:
+	> 5+5
+	10.000000
 
-Spaces will be ignored unless there is no operator between two values, in which case they are implicity multiplied
-Implicit multiplication will also be performed if a parenthesis separates two values
-Ex:
-> 5.0 + 5.0
-  10.000000
+	Spaces will be ignored unless there is no operator between two values.  If there is no operator between what will evaluate to be two values, they are implicitly multiplied
+	Ex:
+	> 5.0 + 5.0
+	10.000000
 
-> 5 5
-  25.000000
+	> 5 5 erf(1000)
+	25.000000
 
-> 5(-5)
-  -25.000000
+	> 5(-5)
+	-25.000000
 
-Program follows order of operations (note that spaces here are used purely for visual clarity).
-Ex: 
-> 5^3.1^0.2 + 39.2^2 / (2(200-100))
-  15.207352
+	Program follows order of operations (note that spaces here are used purely for visual clarity).
+	Ex:
+	> 5^3.1^0.2 + 39.2^2 / (2(200-100))
+	15.207352
 
-A variety of functions are supported (see "SUPPORTED FUNCTIONS" section below).
-Note that parentheses for single-argument functions are entirely optional.
-Ex:
-> sin 2
-  0.909297
+	A variety of functions are supported (see "SUPPORTED FUNCTIONS" section below).
+	Note that parentheses for single-argument functions are entirely optional.
+	Ex:
+	> sin 2
+	0.909297
 
-> sin(2)
-  0.909297
+	> sin(2)
+	0.909297
 
 
 CLOSE PROGRAM:
-Enter "quit" to close the program.
-Ex: 
-> quit
+	Enter "quit" to close the program.
+	Ex:
+	> quit
 
 
 SUPPORTED OPERATIONS:
-1 + 2        Addition
-1 - 2        Subtraction
-- 1          Negation
-1 * 2        Multiplication
-1 / 2        Division
-1 ^ 2        Exponentiation
+	1 + 2    	Addition
+	1 - 2    	Subtraction
+	- 1      	Negation
+	1 * 2    	Multiplication
+	1 / 2    	Division
+	1 ^ 2    	Exponentiation
 
 
 SUPPORTED FUNCTIONS:
-idiv(1, 2)   Integer division (1 is divided by 2)
-mod(1, 2)    Modulo (remainder of 1 divided by 2)
-log(1, 2)    Logarithm (logarithm of 2, base 1) 
-root(1, 2)   Root (root order 1 of 2)
-sin(1)       Sine (Sine of 1 radian)
+	idiv(x,y)	Integer division (x is divided by y)
+	mod(x,y) 	Modulo (remainder of x divided by y)
+	gcd(x,y) 	Greatest common divisor
+	lcm(x,y) 	Least common multiple
+	ceil(x)  	Returns smallest integer greater than x
+	floor(x) 	Returns largest integer smaller than x
+	round(x) 	Rturns nearest integer to x  
+	trunc(x) 	Truncates any decimal places
+    sign(x)  	Returns 1 for positive and 0, -1 for negative values
+	abs(x)   	Absolute value
 
+	log(x, y)	Logarithm (logarithm, base x, of y)
+	ln(x)    	Natural logarithm (base e)
+	logt(x)  	Log base 10
+	root(x, y)  Root (root, order x, of y)
+	sqrt(x)  	Square root
+	cbrt(x)  	Cube root
+	hypot(x,y)  Hypotenuse of a right triangle with leg lengths x and y  
+
+	sin(x)   	Sine (all trig inputs and inverse trig outputs are in radians)
+	cos(x)   	Cosine
+	tan(x)   	Tangent
+	sec(x)   	Secant
+	csc(x)   	Cosecant
+	cot(x)   	Cotangent
+	asin(x)  	Inverse sine
+	acos(x)  	Inverse cosine
+	atan(x)  	Inverse tangent
+	asec(x)  	Inverse secant
+	acsc(x)  	Inverse cosecant
+	acot(x)  	Inverse cotangent
+	sinh(x)  	Hyperbolic sine
+	cosh(x)  	Hyperbolic cosine
+	tanh(x)  	Hyperbolic tangent
+	sech(x)  	Hyperbolic secant
+	csch(x)  	Hyperbolic cosecant
+	coth(x)  	Hyperbolic cotangent
+	asinh(x) 	Inverse hyperbolic sine
+	acosh(x) 	Inverse hyperbolic cosine
+	atanh(x) 	Inverse hyperbolic tangent
+	asech(x) 	Inverse hyperbolic secant
+	acsch(x) 	Inverse hyperbolic cosecant
+	acoth(x) 	Inverse hyperbolic cotangent
+	atant(y,x)  Two argument arctangent function: Mirrors the form atan(y/x), but gives the correct quadrant
+	sinc(x)  	Unnormalized sinc function
+	nsinc(x) 	Normalized sinc function
+
+	erf(x)   	Error function
+	erfc(x)  	Complementary error function
+	gamma(x) 	Gamma function
+	lgamm(x) 	Natural logarithm of absolute value of gamma function
+	reqll(x,y)  Equivalent resistance of two parallel resistors, (xy) / (x+y)
 
 ERRORS:
-"unrecognized token:"
-  One or more unrecognized symbols or words were encountered.  The first of these is shown after the colon.
-  Note that a maximum of five sequential characters can constitute a token
+	"unrecognized token:"
+	One or more unrecognized symbols or words were encountered.  The first of these is shown after the colon.
+	Note that a maximum of five sequential characters can constitute a token
 
-"overflow error"
-  The input was too long, or resulted in too many operations or variables
+	"overflow error"
+	The input was too long, or resulted in too many operations or variables
 
-"syntax error"
-  All tokens were recognized, but one or more were used incorrectly
+	"syntax error"
+	All tokens were recognized, but one or more were used incorrectly
