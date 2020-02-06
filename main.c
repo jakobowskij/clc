@@ -16,59 +16,65 @@ Released under the MIT License.
 #define OP_NULL 0
 #define OP_ADD 1
 #define OP_SUB 2
-#define OP_NEG 3
-#define OP_MUL 4
-#define OP_DIV 5
-#define OP_EXP 6
-#define OP_DIV_INT 7
-#define OP_MOD 8
-#define OP_GCD 9
-#define OP_LCM 10
-#define OP_CEIL 11
-#define OP_FLOOR 12
-#define OP_ROUND 13
-#define OP_TRUNC 14
-#define OP_SIGN 15
-#define OP_ABS 16 
-#define OP_LOG 17
-#define OP_LN 18
-#define OP_LOGT 19 
-#define OP_ROOT 20
-#define OP_SQRT 21
-#define OP_CBRT 22
-#define OP_HYPOT 23
-#define OP_SIN 24
-#define OP_COS 25
-#define OP_TAN 26
-#define OP_SEC 27
-#define OP_CSC 28
-#define OP_COT 29
-#define OP_ASIN 30
-#define OP_ACOS 31
-#define OP_ATAN 32
-#define OP_ASEC 33
-#define OP_ACSC 34
-#define OP_ACOT 35
-#define OP_SINH 36
-#define OP_COSH 37
-#define OP_TANH 38
-#define OP_SECH 39
-#define OP_CSCH 40
-#define OP_COTH 41
-#define OP_ASINH 42
-#define OP_ACOSH 43
-#define OP_ATANH 44
-#define OP_ASECH 45
-#define OP_ACSCH 46
-#define OP_ACOTH 47
-#define OP_ATANT 48
-#define OP_SINC 49
-#define OP_NSINC 50
-#define OP_ERF 51
-#define OP_ERFC 52
-#define OP_GAMMA 53
-#define OP_LGAMM 54
-#define OP_REQLL 55
+#define OP_MUL 3
+#define OP_DIV 4
+#define OP_EXP 5
+#define OP_DIV_INT 6
+#define OP_MOD 7
+#define OP_GCD 8
+#define OP_LCM 9
+#define OP_LOG 10
+#define OP_ROOT 11
+#define OP_HYPOT 12
+#define OP_ATAN2 13
+#define OP_REQLL 14
+#define OP_PERR 15
+
+#define UNARY_OPERATORS 32
+#define OP_CEIL 32
+#define OP_FLOOR 33
+#define OP_ROUND 34
+#define OP_TRUNC 35
+#define OP_SIGN 36
+#define OP_ABS  37
+#define OP_LN 38
+#define OP_LOG10 39
+#define OP_SQRT 40
+#define OP_CBRT 41
+#define OP_SIN 42
+#define OP_COS 43
+#define OP_TAN 44
+#define OP_SEC 45
+#define OP_CSC 46
+#define OP_COT 47
+#define OP_ASIN 48
+#define OP_ACOS 49
+#define OP_ATAN 50
+#define OP_ASEC 51
+#define OP_ACSC 52
+#define OP_ACOT 53
+#define OP_SINH 54
+#define OP_COSH 55
+#define OP_TANH 56
+#define OP_SECH 57
+#define OP_CSCH 58
+#define OP_COTH 59
+#define OP_ASINH 60
+#define OP_ACOSH 61
+#define OP_ATANH 62
+#define OP_ASECH 63
+#define OP_ACSCH 64
+#define OP_ACOTH 65
+#define OP_SINC 66
+#define OP_NSINC 67
+#define OP_ERF 68
+#define OP_ERFC 69
+#define OP_GAMMA 70
+#define OP_LGAMMA 71
+#define OP_DEG 72
+#define OP_RAD 73
+#define OP_LOG2 74
+#define OP_NEG 75
 
 #define ARG_SEPARATOR 125
 #define LEFT_PARENTH 126
@@ -79,31 +85,41 @@ Released under the MIT License.
 #define ERR_SYNTAX 1
 #define ERR_OVERFLOW 2
 #define ERR_UNKNOWN_TOKEN 3
+#define ERR_UNDEFINED 4
+#define ERR_OUT_OF_BOUNDS_ANSWER 5
 
-#define NR_FUNCTIONS 49
+#define CMD_NULL 0
+#define CMD_QUIT 1
+#define CMD_SCI 2
+#define CMD_DEC 3
+#define CMD_LS 4
+
+#define OUTPUT_DECIMAL 0
+#define OUTPUT_SCIENTIFIC 1
+
+#define NR_FUNCTIONS 53
 #define INPUT_HOLDER_SIZE 32
 #define INPUT_SIZE 1024
 #define OUTPUT_SIZE 512
 #define VAR_VAL_SIZE 128
 #define STACK_SIZE 256
-#define UNRECOGNIZED_TOKEN_SIZE 6
+#define VARIABLE_SIZE 256
+#define SESSION_VAR_START 64
+#define LOAD_VAR_HOLDER_SIZE 128
+#define FILENAME_SIZE 64
 
 #define pi 3.14159265358979323846
+#define RAD_TO_DEG_CONST 57.29577951308232286465
+#define DEG_TO_RAD_CONST 0.01745329251994329547
 
-
-void resetValues(double variableValues[], unsigned char output[], char rawInput[], char unrecognizedToken[], double* printVal, int* error);
-unsigned char pop(unsigned char arr[], int* length);
-void push(unsigned char arr[], unsigned char val, int* length, int maxLength, int* error);
-bool stackIsEmpty(unsigned char stack[]);
-bool isFunction(unsigned char token);
-bool isOperator(unsigned char token);
-bool isBinaryOperator(unsigned char token);
-void pushOperator(unsigned char token, unsigned char stack[], int* stackLength, unsigned char output[], int* outputLength, int* error);
-long long int doubleToInt(double input);
-double gcd(double a, double b);
-unsigned char findFunction(char input[], int* error, char unrecognizedToken[]);
-unsigned char tokenize(char rawInput[], int* indexPtr, double variableValues[], int* varValIndex, bool unaryNegation, int* error, char unrecognizedToken[]);
-void inputToRPN(char rawInput[], unsigned char output[], double variableValues[], int* error, char unrecognizedToken[]);
+void resetValues(double variableValues[], unsigned char output[], char rawInput[], char unrecognizedToken[],
+				 double* printVal, int* error, int* numDecimals);
+int findCommand(char input[]);
+void loadVariables(char userVars[][10], double userVarVals[], int VAR_START_POSITION, int VAR_END_POSITION, char filename[64]);
+void saveVariable(char userVars[][10], double userVarVals[], int VAR_START_POSITION, int VAR_END_POSITION, char filename[]);
+int findNumDecimals(double input);
+void inputToRPN(char rawInput[], unsigned char output[], double variableValues[], int* error,
+				char unrecognizedToken[], char userVars[][10], double userVarVals[]);
 double evaluateRPN(unsigned char input[], double variableValues[], int* error);
 
 int main() {
@@ -116,58 +132,227 @@ int main() {
 	double variableValues[VAR_VAL_SIZE] = { 0.0 };
 	double printVal = 0.0;
 	bool scientificNotation = false;
-	char unrecognizedToken[UNRECOGNIZED_TOKEN_SIZE] = { 0 };
+	char unrecognizedToken[INPUT_HOLDER_SIZE] = { 0 };
+	int numDecimals = 0;
+	char userVars[VARIABLE_SIZE][10] = { '\0' }; userVars[0][0] = 'a';  userVars[0][1] = 'n'; userVars[0][2] = 's';
+	double userVarVals[VARIABLE_SIZE] = { 0.0 };
+	int numSpacesOffset = 0;
+	char filename[64] = { '\0' };
+	int command = 0;
+
+	loadVariables(userVars, userVarVals, 1, SESSION_VAR_START, "defaultvars.txt");
 
 	printf("> ");
 	while (fgets(rawInput, INPUT_SIZE, stdin) && !quit) {
-		const int UNRECOGNIZED_TOKEN_LAST_ELEMENT = UNRECOGNIZED_TOKEN_SIZE - 1;
+		const int UNRECOGNIZED_TOKEN_LAST_ELEMENT = INPUT_HOLDER_SIZE - 1;
 
 		if (rawInput[INPUT_SIZE - 2] != '\0') {
 			error = ERR_OVERFLOW;
 		}
 
+		command = findCommand(rawInput);
+
 		// Check for commands
-		if (rawInput[0] == 'q' && rawInput[1] == 'u' && rawInput[2] == 'i' && rawInput[3] == 't') {
+		if (command == CMD_QUIT) {
 			break;
+		}
+		else if (command == CMD_DEC) {
+			if (scientificNotation) {
+				scientificNotation = false;
+				printf("  Changed to decimal output\n\n> ");
+			}
+			else {
+				printf("  Already in decimal output\n\n> ");
+			}
+			continue;
+		}
+		else if (command == CMD_SCI) {
+			if (!scientificNotation) {
+				scientificNotation = true;
+				printf("  Changed to scientific notation output\n\n> ");
+			}
+			else {
+				printf("  Already in scientific notation output\n\n> ");
+			}
+			continue;
+		}
+		else if (command == CMD_LS) {
+			printf("\n  ans =        %.15E\n", userVarVals[0]);
+
+			printf("\n    DEFAULT VARIABLES:\n");
+			for (int i = 1; i < SESSION_VAR_START && userVars[i][0] != '\0'; i++) {
+				printf("  %s   ", userVars[i]);
+				
+				for (int j = 0; j < 10; j++) {
+					if (userVars[i][j] == '\0') {
+						printf(" ");
+					}
+				}
+
+				printf("%.15E\n", userVarVals[i]);
+			}
+
+			printf("\n    SESSION VARIABLES:\n");
+			for (int i = SESSION_VAR_START; i < VARIABLE_SIZE && userVars[i][0] != '\0'; i++) {
+				printf("  %s   ", userVars[i]);
+
+				for (int j = 0; j < 10; j++) {
+					if (userVars[i][j] == '\0') {
+						printf(" ");
+					}
+				}
+
+				printf("%.15E\n", userVarVals[i]);
+			}
+
+			printf("\n> ");
+			continue;
 		}
 
 		// Perform calculation
 		if (error == NO_ERROR) {
-			inputToRPN(rawInput, output, variableValues, &error, unrecognizedToken);
+			inputToRPN(rawInput, output, variableValues, &error, unrecognizedToken, userVars, userVarVals);
 		}
 		if (error == NO_ERROR) {
 			printVal = evaluateRPN(output, variableValues, &error);
 		}
 
-		// Error checking and printing
-		if (error == NO_ERROR) {
-			printf("  %lf\n", printVal);
-		}
-		else if (error == ERR_SYNTAX) {
-			printf("  syntax error\n");
-		}
-		else if (error == ERR_UNKNOWN_TOKEN) {
-			printf("  unrecognized token \"");
-			for (int i = 0; i < UNRECOGNIZED_TOKEN_LAST_ELEMENT; i++) {
-				if (unrecognizedToken[i] == '\0') break;
-				printf("%c", unrecognizedToken[i]);
+		// Print output, depending on errors and other conditions
+		switch (error) {
+		case NO_ERROR:
+			if (scientificNotation) {
+				printf("  %.15E\n", printVal);
+			}
+			else {
+				numDecimals = findNumDecimals(printVal);
+				printf("  %.*lf\n", numDecimals, printVal);
 			}
 
+			userVarVals[0] = printVal;
+
+			break;
+		case ERR_SYNTAX:
+			printf("  Syntax error\n");
+			break;
+		case ERR_UNKNOWN_TOKEN:
+			printf("  Unrecognized token \"");
+			for (int i = 0; i < UNRECOGNIZED_TOKEN_LAST_ELEMENT; i++) {
+				if (unrecognizedToken[i] == '\0') break;
+				if (unrecognizedToken[i] == '\t') {
+					printf("[tab]");
+				}
+				else {
+					printf("%c", unrecognizedToken[i]);
+				}
+			}
 			if (unrecognizedToken[UNRECOGNIZED_TOKEN_LAST_ELEMENT] != 0) printf("...");
-			printf("\"\n");
-		}
-		else { // overflow
-			printf("  overflow error\n");
+
+			// check if one of the tokens is a command
+			command = findCommand(unrecognizedToken);
+			if (command != CMD_NULL) {
+				printf("\".  Did you mean to enter a command?\n");
+			}
+			else printf("\"\n");
+
+			break;
+		case ERR_OVERFLOW:
+			printf("  Overflow error\n");
+			break;
+		case ERR_UNDEFINED:
+			printf("  Undefined or out of bounds\n");
+			break;
 		}
 
 		printf("\n> ");
-		resetValues(variableValues, output, rawInput, unrecognizedToken, &printVal, &error);
+		resetValues(variableValues, output, rawInput, unrecognizedToken, &printVal, &error, &numDecimals);
 	}
 
 	return 0;
 }
 
-void resetValues(double variableValues[], unsigned char output[], char rawInput[], char unrecognizedToken[], double* printVal, int* error) {
+void loadVariables(char userVars[][10], double userVarVals[], int VAR_START_POSITION, int VAR_END_POSITION, char filename[64]) {
+	// Loads variables from file into memory
+	FILE* file = NULL;
+	file = fopen(filename, "r");
+	char textInput[LOAD_VAR_HOLDER_SIZE] = { '\0' };
+	char holder[LOAD_VAR_HOLDER_SIZE] = { '\0' };
+	bool lineError[LOAD_VAR_HOLDER_SIZE] = { false };
+	int j = 0; // iterator
+	int jHolder = 0;
+	bool noLoadFail = true;
+
+	if (file == NULL) {
+		printf("  Could not load %s\n", filename);
+	}
+	else {
+		// Iterates line by line. Starts at 1 because element 0 is "ans"
+		for (int i = VAR_START_POSITION; i <= VAR_END_POSITION && fgets(textInput, LOAD_VAR_HOLDER_SIZE, file); i++) {
+			if ((textInput[0] >= 'a' && textInput[0] <= 'z') || (textInput[0] >= 'A' && textInput[0] <= 'Z')) {
+				// Copies variable name
+				for (j = 0; j <= 20 && ((textInput[j] >= 'a' && textInput[j] <= 'z') || (textInput[j] >= 'A' && textInput[j] <= 'Z') 
+					|| (textInput[j] >= '0' && textInput[j] <= '9') || textInput[j] == '_'); j++) {
+					userVars[i][j] = textInput[j];
+				}
+
+				// Skips over space.  If character isn't a space, skip this line
+				if (textInput[j] != ' ' && textInput[j] != '\t') {
+					lineError[i] = true;
+					continue;
+				}
+				else j++;
+
+				// Gets variable values
+				for (; j < 118 && ((textInput[j] >= '0' && textInput[j] <= '9') || textInput[j] == '.' || textInput[j] == 'E' 
+					|| textInput[j] == '-'); j++) {
+					holder[jHolder] = textInput[j];
+					jHolder++;
+				}
+				userVarVals[i] = atof(holder);
+
+				// Clears holder
+				while (jHolder > 0) {
+					holder[jHolder] = '\0';
+					jHolder--;
+				}
+				holder[jHolder] = '\0';
+			}
+			else if (textInput[0] == '\0') continue;
+			else lineError[i] = true;
+		}
+	}
+
+	for (int i = 0; i < LOAD_VAR_HOLDER_SIZE; i++) {
+		if (lineError[i]) {
+			printf("  Failed to parse line %d from file %s\n", i, filename);
+			noLoadFail = false;
+		}
+	}
+	if (!noLoadFail) printf("\n");
+
+	if (file != NULL) fclose(file);
+}
+
+void saveVariable(char userVars[][10], double userVarVals[], int VAR_START_POSITION, int VAR_END_POSITION, char filename[]) {
+	// Saves variables from session to file
+	FILE* file = NULL;
+	file = fopen(filename, "w");
+
+	if (file == NULL) {
+		printf("  Could not load %s\n", filename);
+	}
+	else {
+		for (int i = VAR_START_POSITION; i < VAR_END_POSITION && userVars[i][0] != '\0'; i++) {
+			printf("%s", userVars[i]);
+			printf(" ");
+			printf("%lf\n", userVarVals[i]);
+		}
+	}
+
+	if (file != NULL) fclose(file);
+}
+
+void resetValues(double variableValues[], unsigned char output[], char rawInput[], char unrecognizedToken[],
+	double* printVal, int* error, int* numDecimals) {
 	// Resets values and arrays between main loops
 	for (int i = 0; i < VAR_VAL_SIZE; i++) {
 		variableValues[i] = 0.0;
@@ -178,11 +363,42 @@ void resetValues(double variableValues[], unsigned char output[], char rawInput[
 	for (int i = 0; i < INPUT_SIZE; i++) {
 		rawInput[i] = 0;
 	}
-	for (int i = 0; i < UNRECOGNIZED_TOKEN_SIZE; i++) {
+	for (int i = 0; i < INPUT_HOLDER_SIZE; i++) {
 		unrecognizedToken[i] = 0;
 	}
 	*printVal = 0.0;
 	*error = 0;
+	*numDecimals = 0;
+}
+
+int findCommand(char input[]) {
+	
+	char commands[4][6] = {"quit", "sci", "dec", "ls"};
+	int commandCodes[4] = {CMD_QUIT, CMD_SCI, CMD_DEC, CMD_LS};
+
+	for (int i = 0; i < 4; i++) { // command loop
+		for (int j = 0; j < 6; j++) { // character loop
+			if (commands[i][j] == '\0' && (input[j] == '\0' || input[j] == '\n')) {
+				return commandCodes[i];
+			}
+			if (input[j] != commands[i][j]) {
+				// If at any point the input and current command don't match, try next command
+				break;
+			}
+		}
+
+	}
+	return CMD_NULL;
+}
+
+int findNumDecimals(double input) {
+	// Finds appropriate amount of decimals to display such that final output is accurate, and takes up similar amount of space each time
+	int decimals = 15;
+	while (input >= 10 && decimals > 0) {
+		input /= 10.0;
+		decimals--;
+	}
+	return decimals;
 }
 
 unsigned char pop(unsigned char arr[], int* length) {
@@ -223,24 +439,20 @@ bool isOperator(unsigned char token) {
 
 bool isBinaryOperator(unsigned char token) {
 	// Returns true if function or operator has two inputs, false if one
-	return ((token == OP_ADD || token == OP_SUB)
-		|| (token >= OP_MUL && token <= OP_LCM)
-		|| (token == OP_LOG) || (token == OP_ROOT)
-		|| (token == OP_HYPOT) || (token == OP_ATANT)
-		|| (token == OP_REQLL));
-}
+	return (token < UNARY_OPERATORS);
+} // consider grouping all unary and binary functions/operators separately, so that just one range has to be checked here
 
 void pushOperator(unsigned char token, unsigned char stack[], int* stackLength, unsigned char output[], int* outputLength, int* error) {
 	// Pushes given token and some tokens on stack to the output in such a manner that output is in postfix
 
 	int precedence[7] = {
-		0, //NULL
-		1, //ADD
-		1, //SUB
-		3, //NEG
-		2, //MUL
-		2, //DIV
-		4, //EXP
+		0, // NULL
+		1, // ADD
+		1, // SUB
+		3, // NEG
+		2, // MUL
+		2, // DIV
+		4, // EXP
 	};
 
 	int stackPrecedence = 0; int tokenPrecedence = 0;
@@ -293,65 +505,109 @@ double gcd(double a, double b) {
 	return (double)A;
 }
 
-unsigned char findFunction(char input[], int* error, char unrecognizedToken[]) {
+unsigned char findFunction(char input[]) {
 	// Returns the op-code for a given string representing a function. Maximum length is 5. Unused (terminal) characters must be null
 
-	char functions[NR_FUNCTIONS][5] = { "idiv\0", "mod\0\0", "log\0\0", "root\0",
-		"sin\0\0", "cos\0\0", "tan\0\0", "sec\0\0", "csc\0\0", "cot\0\0",
-		"asin\0", "acos\0", "atan\0", "asec\0", "acsc\0", "acot\0",
-		"sinh\0", "cosh\0", "tanh\0", "sech\0", "csch\0", "coth\0",
+	char functions[NR_FUNCTIONS][10] = { "div", "mod", "log", "root",
+		"sin", "cos", "tan", "sec", "csc", "cot",
+		"asin", "acos", "atan", "asec", "acsc", "acot",
+		"sinh", "cosh", "tanh", "sech", "csch", "coth",
 		"asinh", "acosh", "atanh", "asech", "acsch", "acoth",
-		"sqrt\0", "ln\0\0\0", "logt\0", "ceil\0", "floor", "round", "sgn\0\0", "gcd\0\0", "lcm\0\0", "atant", "abs\0\0",
-		"cbrt\0", "trunc", "erf\0\0", "erfc\0", "gamma", "hypot", "lgamm", "sinc\0", "nsinc", "reqll" };
+		"sqrt", "ln", "log10", "ceil", "floor", "round", "sgn", "gcd", "lcm", "atan2", "abs", "log2",
+		"cbrt", "trunc", "erf", "erfc", "gamma", "hypot", "lgamma", "sinc", "nsinc", "reqll", "perr", "deg", "rad" };
 	int functionOP[NR_FUNCTIONS] = { OP_DIV_INT, OP_MOD, OP_LOG, OP_ROOT,
 		OP_SIN, OP_COS, OP_TAN, OP_SEC, OP_CSC, OP_COT,
 		OP_ASIN, OP_ACOS, OP_ATAN, OP_ASEC, OP_ACSC, OP_ACOT,
 		OP_SINH, OP_COSH, OP_TANH, OP_SECH, OP_CSCH, OP_COTH,
 		OP_ASINH, OP_ACOSH, OP_ATANH, OP_ASECH, OP_ACSCH, OP_ACOTH,
-		OP_SQRT, OP_LN, OP_LOGT, OP_CEIL, OP_FLOOR, OP_ROUND, OP_SIGN, OP_GCD, OP_LCM, OP_ATANT, OP_ABS,
-		OP_CBRT, OP_TRUNC, OP_ERF, OP_ERFC, OP_GAMMA, OP_HYPOT, OP_LGAMM, OP_SINC, OP_NSINC, OP_REQLL };
+		OP_SQRT, OP_LN, OP_LOG10, OP_CEIL, OP_FLOOR, OP_ROUND, OP_SIGN, OP_GCD, OP_LCM, OP_ATAN2, OP_ABS, OP_LOG2,
+		OP_CBRT, OP_TRUNC, OP_ERF, OP_ERFC, OP_GAMMA, OP_HYPOT, OP_LGAMMA, OP_SINC, OP_NSINC, OP_REQLL, OP_PERR, OP_DEG, OP_RAD };
 
 	for (int i = 0; i < NR_FUNCTIONS; i++) { // function loop
-		for (int j = 0; j < 5; j++) { // character loop
+		for (int j = 0; j < 10; j++) { // character loop
 			if (input[j] != functions[i][j]) {
 				// If at any point the input and current function don't match, try next function
 				break;
 			}
-			else if (j == 4 && input[5] == '\0') {
+			else if (j == 9 && input[10] == '\0') {
 				// Return if end of the input has been reached and all have matched
 				return functionOP[i];
 			}
 		}
 
 	}
-	*error = ERR_UNKNOWN_TOKEN;
-	for (int i = 0; i < UNRECOGNIZED_TOKEN_SIZE; i++) {
-		unrecognizedToken[i] = input[i];
-	}
 	return OP_NULL;
 }
 
-unsigned char tokenize(char rawInput[], int* indexPtr, double variableValues[], int* varValIndex, bool unaryNegation, int* error, char unrecognizedToken[]) {
+double findVariable(char input[], int* error, char unrecognizedToken[], char userVars[][10], double userVarVals[]) {
+
+	for (int i = 0; i < VARIABLE_SIZE; i++) { // variable loop
+		for (int j = 0; j < 10; j++) { // character loop
+			if (input[j] != userVars[i][j]) {
+				// If at any point the input and current variable don't match, try next variable
+				break;
+			}
+			else if (j == 9 && input[10] == '\0') {
+				// Return if end of the input has been reached and all have matched
+				return userVarVals[i];
+			}
+		}
+	}
+	*error = ERR_UNKNOWN_TOKEN;
+	for (int i = 0; i < INPUT_HOLDER_SIZE; i++) {
+		unrecognizedToken[i] = input[i];
+	}
+
+	return 0.0;
+}
+
+unsigned char tokenize(char rawInput[], int* indexPtr, double variableValues[], int* varValIndex, bool unaryNegation,
+	int* error, char unrecognizedToken[], char userVars[][10], double userVarVals[]) {
 	// Converts multi-character inputs (such as function names) into their representative tokens
 
 	char currChar = rawInput[*indexPtr];
 	char inputHolder[INPUT_HOLDER_SIZE] = { 0 };
 	int inputHolderIndex = 0;
 	int numDecimalPlaces = 0; // If this exeeds one for a number, error
+	int numE = 0;
+	bool prevCharIsE = false;
+	bool negativeAnswerIndex = false;
 	unsigned char outputToken = 0;
+	int answerNumber = -1;
 
-	if ((currChar >= '0' && currChar <= '9') || currChar == '.') {
-		// If token is a value (currently does not support scientific notation)
-		while ((currChar >= '0' && currChar <= '9') || currChar == '.') {
-			// Scan all characters until no longer part of a value
-			if (currChar == '.') numDecimalPlaces++;
-			if (inputHolderIndex >= 32) {
+	if ((currChar >= '0' && currChar <= '9')) {
+		// If token is a value, scan all characters until no longer part of a value
+		while ((currChar >= '0' && currChar <= '9') || currChar == '.' || currChar == 'E' || currChar == '-') {
+			if (currChar == '-') {
+				if (!prevCharIsE) {
+					break;
+				}
+			}
+			prevCharIsE = false;
+
+			if (currChar == '.') {
+				if (numE > 0) {
+					*error = ERR_SYNTAX;
+					printf("A");
+					break;
+				}
+				numDecimalPlaces++;
+			}
+			else if (currChar == 'E') {
+				numE++;
+				prevCharIsE = true;
+			}
+
+			if (numE > 1) break;
+
+			if (inputHolderIndex >= INPUT_HOLDER_SIZE) {
 				*error = ERR_OVERFLOW;
 				break;
 			}
+
 			inputHolder[inputHolderIndex] = currChar;
-			(*indexPtr)++;
 			inputHolderIndex++;
+			(*indexPtr)++;
 			currChar = rawInput[*indexPtr];
 		}
 
@@ -365,20 +621,29 @@ unsigned char tokenize(char rawInput[], int* indexPtr, double variableValues[], 
 		outputToken = *varValIndex + VAR_BEGIN;
 		(*varValIndex)++;
 	}
-	else if (currChar >= 'a' && currChar <= 'z') {
-		// If token is a function
-		while (currChar >= 'a' && currChar <= 'z') {
-			if (inputHolderIndex >= 6) {
+	else if ((currChar >= 'a' && currChar <= 'z') || (currChar >= 'A' && currChar <= 'Z')) {
+		// If token is a function or variable
+		while ((currChar >= 'a' && currChar <= 'z') || (currChar >= 'A' && currChar <= 'Z') || (currChar >= '0' && currChar <= '9') 
+			|| currChar == '_') {
+			if (inputHolderIndex >= INPUT_HOLDER_SIZE) {
 				break;
 			}
-			// Scan characters until no longer can be part of a function
+
+			// Scan characters until no longer can be part of a function or variable
 			inputHolder[inputHolderIndex] = currChar;
 			(*indexPtr)++;
 			inputHolderIndex++;
 			currChar = rawInput[*indexPtr];
 		}
 
-		outputToken = findFunction(inputHolder, error, unrecognizedToken);
+		outputToken = findFunction(inputHolder);
+
+		// If token wasn't a function, test for variables
+		if (outputToken == OP_NULL) {
+			variableValues[*varValIndex] = findVariable(inputHolder, error, unrecognizedToken, userVars, userVarVals);
+			outputToken = *varValIndex + VAR_BEGIN;
+			(*varValIndex)++;
+		}
 	}
 	else {
 		// If none of the above applied, single character tokens are tested for
@@ -425,7 +690,8 @@ unsigned char tokenize(char rawInput[], int* indexPtr, double variableValues[], 
 	return outputToken;
 }
 
-void inputToRPN(char rawInput[], unsigned char output[], double variableValues[], int* error, char unrecognizedToken[]) {
+void inputToRPN(char rawInput[], unsigned char output[], double variableValues[], int* error, char unrecognizedToken[],
+	char userVars[][10], double userVarVals[]) {
 	// Converts infix input to array of postfix tokens
 
 	unsigned char stack[STACK_SIZE] = { 0 }; int stackLength = 0;
@@ -446,7 +712,7 @@ void inputToRPN(char rawInput[], unsigned char output[], double variableValues[]
 			// If end of input has been reached
 			break;
 		}
-		token = tokenize(rawInput, &index, variableValues, &varValIndex, unaryNegation, error, unrecognizedToken);
+		token = tokenize(rawInput, &index, variableValues, &varValIndex, unaryNegation, error, unrecognizedToken, userVars, userVarVals);
 		if (*error != NO_ERROR) {
 			return;
 		}
@@ -518,12 +784,14 @@ void inputToRPN(char rawInput[], unsigned char output[], double variableValues[]
 }
 
 double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
-	// Given input in RPN format and a list of variable values, performs the actual calculations of the program in the given order and returns the final result
+	// Given input in RPN format and a list of variable values, performs the actual calculations of the program 
+	// in the given order and returns the final result
 
 	unsigned char stack[STACK_SIZE] = { 0 }; int stackLength = 0;
 	int valueIndexLeft = 0; int valueIndexRight = 0;
 	unsigned char operand = 0;
 	bool binary;
+
 
 	for (int inputIndex = 0; inputIndex < OUTPUT_SIZE; inputIndex++) {
 		if (input[inputIndex] == 0) {
@@ -551,6 +819,7 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 					}
 					else {
 						*error = ERR_SYNTAX;
+						printf("B");
 						return 0.0;
 					}
 				}
@@ -568,24 +837,35 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] * variableValues[valueIndexRight];
 					break;
 				case OP_DIV:
+					if (variableValues[valueIndexRight] == 0.0) {
+						*error = ERR_UNDEFINED;
+						return 0.0;
+					}
 					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] / variableValues[valueIndexRight];
 					break;
 				case OP_EXP:
 					variableValues[valueIndexLeft] = pow(variableValues[valueIndexLeft], variableValues[valueIndexRight]);
 					break;
 				case OP_DIV_INT:
-					variableValues[valueIndexLeft] = (double)(doubleToInt(variableValues[valueIndexLeft]) / doubleToInt(variableValues[valueIndexRight]));
+					variableValues[valueIndexLeft] = (double)(doubleToInt(variableValues[valueIndexLeft])
+						/ doubleToInt(variableValues[valueIndexRight]));
 					break;
 				case OP_MOD:
-					variableValues[valueIndexLeft] = (double)((int)(round(variableValues[valueIndexLeft]) + 0.01)
-						% (int)(round(variableValues[valueIndexRight]) + 0.01));
+					if (doubleToInt(variableValues[valueIndexRight]) == 0) {
+						*error = ERR_UNDEFINED;
+						return 0.0;
+					}
+					else
+						variableValues[valueIndexLeft] = (double)(doubleToInt(variableValues[valueIndexLeft])
+							% doubleToInt(variableValues[valueIndexRight]));
 					break;
 				case OP_GCD:
 					variableValues[valueIndexLeft] = gcd(variableValues[valueIndexRight], variableValues[valueIndexLeft]);
 					break;
 				case OP_LCM:
-					variableValues[valueIndexLeft] = (variableValues[valueIndexRight] / 
-									gcd(variableValues[valueIndexRight], variableValues[valueIndexLeft])) * variableValues[valueIndexLeft];
+					variableValues[valueIndexLeft] = (variableValues[valueIndexRight] /
+						gcd(variableValues[valueIndexRight], variableValues[valueIndexLeft])) *
+						variableValues[valueIndexLeft];
 					break;
 				case OP_CEIL:
 					variableValues[valueIndexRight] = ceil(variableValues[valueIndexRight]);
@@ -600,12 +880,10 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 					variableValues[valueIndexRight] = trunc(variableValues[valueIndexRight]);
 					break;
 				case OP_SIGN:
-					if (variableValues[valueIndexRight] >= 0.0) {
+					if (variableValues[valueIndexRight] >= 0.0)
 						variableValues[valueIndexRight] = 1.0;
-					}
-					else {
+					else
 						variableValues[valueIndexRight] = -1.0;
-					}
 					break;
 				case OP_ABS:
 					variableValues[valueIndexRight] = fabs(variableValues[valueIndexRight]);
@@ -616,7 +894,7 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 				case OP_LN:
 					variableValues[valueIndexRight] = log(variableValues[valueIndexRight]);
 					break;
-				case OP_LOGT:
+				case OP_LOG10:
 					variableValues[valueIndexRight] = log10(variableValues[valueIndexRight]);
 					break;
 				case OP_ROOT:
@@ -671,9 +949,8 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 					else if (variableValues[valueIndexRight] < 0) {
 						variableValues[valueIndexRight] = atan(1 / variableValues[valueIndexRight]) + pi;
 					}
-					else {
+					else
 						variableValues[valueIndexRight] = pi / 2;
-					}
 					break;
 				case OP_SINH:
 					variableValues[valueIndexRight] = sinh(variableValues[valueIndexRight]);
@@ -711,7 +988,7 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 				case OP_ACOTH:
 					variableValues[valueIndexRight] = atanh(1 / (variableValues[valueIndexRight]));
 					break;
-				case OP_ATANT:
+				case OP_ATAN2:
 					variableValues[valueIndexLeft] = atan2(variableValues[valueIndexLeft], variableValues[valueIndexRight]);
 					break;
 				case OP_SINC:
@@ -720,7 +997,8 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 					break;
 				case OP_NSINC:
 					if (variableValues[valueIndexRight] == 0.0) variableValues[valueIndexRight] = 1.0;
-					else variableValues[valueIndexRight] = sin(pi * variableValues[valueIndexRight]) / (pi * variableValues[valueIndexRight]);
+					else variableValues[valueIndexRight] = sin(pi * variableValues[valueIndexRight])
+						/ (pi * variableValues[valueIndexRight]);
 					break;
 				case OP_ERF:
 					variableValues[valueIndexRight] = erf(variableValues[valueIndexRight]);
@@ -731,12 +1009,25 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 				case OP_GAMMA:
 					variableValues[valueIndexRight] = tgamma(variableValues[valueIndexRight]);
 					break;
-				case OP_LGAMM:
+				case OP_LGAMMA:
 					variableValues[valueIndexRight] = lgamma(variableValues[valueIndexRight]);
 					break;
 				case OP_REQLL:
-					variableValues[valueIndexLeft] = (variableValues[valueIndexLeft] * variableValues[valueIndexRight]) 
-													/ (variableValues[valueIndexLeft] + variableValues[valueIndexRight]);
+					variableValues[valueIndexLeft] = (variableValues[valueIndexLeft] * variableValues[valueIndexRight])
+						/ (variableValues[valueIndexLeft] + variableValues[valueIndexRight]);
+					break;
+				case OP_PERR:
+					variableValues[valueIndexLeft] = 100 * (fabs(variableValues[valueIndexLeft] -
+						variableValues[valueIndexRight]) / variableValues[valueIndexRight]);
+					break;
+				case OP_DEG:
+					variableValues[valueIndexRight] *= RAD_TO_DEG_CONST;
+					break;
+				case OP_RAD:
+					variableValues[valueIndexRight] *= DEG_TO_RAD_CONST;
+					break;
+				case OP_LOG2:
+					variableValues[valueIndexRight] = log2(variableValues[valueIndexRight]);
 					break;
 				default:
 					*error = ERR_SYNTAX;
@@ -760,5 +1051,11 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 		// If there is more than one thing left on the stack, an error occurred (most likely a misplaced argument separator)
 		*error = ERR_SYNTAX;
 	}
+	if (isnan(variableValues[0]) || isinf(variableValues[0])) {
+		*error = ERR_UNDEFINED;
+	}
 	return variableValues[0];
 }
+
+
+
