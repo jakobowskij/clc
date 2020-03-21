@@ -14,17 +14,24 @@ Released under the MIT License.
 #include<stdbool.h>
 
 typedef enum OPERATORS {
+//============= BINARY (expept for NEG and NOT) =============//
 /* basic        */ OP_NULL, OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD, OP_NEG,
 /* equality     */ OP_IS, OP_GREATER_THAN, OP_LESS_THAN, OP_GREATER_THAN_EQUAL_TO, OP_LESS_THAN_EQUAL_TO,
 /* logic        */ OP_AND, OP_OR, OP_NOT, OP_XOR, OP_IMPLIES, OP_IFF, OP_IMPLIED_BY,
 /* bitwise      */ OP_RIGHT_SHIFT, OP_LEFT_SHIFT, OP_BITWISE_AND, OP_BITWISE_OR, OP_BITWISE_NOT, OP_BITWISE_XOR,
-/* powers       */ OP_EXP, END_OPS = OP_EXP, OP_LOG, OP_LOG2, OP_LOG10, OP_LN, OP_ROOT, OP_SQRT, OP_CBRT,
-/* discrete     */ OP_CEIL, UNARY_OPERATORS = OP_CEIL, OP_DIV_INT, OP_GCD, OP_LCM, OP_FLOOR, OP_NCR, OP_NPR, OP_ROUND, OP_TRUNC, OP_SIGN, OP_ABS,
+/* powers       */ OP_EXP, END_OPS = OP_EXP, OP_LOG, OP_ROOT,
+/* discrete     */ OP_DIV_INT, OP_GCD, OP_LCM, OP_NCR, OP_NPR,
+/* trig-related */ OP_ATAN2,
+/* misc         */ OP_HYPOT, OP_REQLL, OP_PERR,
+//========================== UNARY ==========================//
+/* powers       */ OP_LOG2, UNARY_OPERATORS = OP_LOG2, OP_LOG10, OP_LN, OP_SQRT, OP_CBRT,
 /* trig         */ OP_SIN, OP_COS, OP_TAN, OP_SEC, OP_CSC, OP_COT, OP_ASIN, OP_ACOS, OP_ATAN, OP_ASEC, OP_ACSC, OP_ACOT,
 /* hyperbolic   */ OP_SINH, OP_COSH, OP_TANH, OP_SECH, OP_CSCH, OP_COTH, OP_ASINH, OP_ACOSH, OP_ATANH, OP_ASECH, OP_ACSCH, OP_ACOTH,
-/* trig-related */ OP_ATAN2, OP_SINC, OP_NSINC, OP_DEG, OP_RAD,
-/* misc         */ OP_HYPOT, OP_REQLL, OP_PERR, OP_ERF, OP_ERFC, OP_GAMMA, OP_LGAMMA,
+/* discrete     */ OP_CEIL, OP_FLOOR, OP_ROUND, OP_TRUNC, OP_SIGN, OP_ABS,
+/* trig-related */ OP_SINC, OP_NSINC, OP_DEG, OP_RAD,
+/* misc         */ OP_ERF, OP_ERFC, OP_GAMMA, OP_LGAMMA,
 
+//========================== OTHER ==========================//
 /* instructions */ INST_ASSIGN_VAL, END_FUNCS = INST_ASSIGN_VAL, INST_JUMP, INST_JUMP_IF_FALSE,
 /* flow         */ ARG_SEPARATOR, LEFT_PARENTH, RIGHT_PARENTH, VAR_BEGIN
 };
