@@ -9,81 +9,81 @@ SUMMARY:
 EVALUATING EXPRESSIONS:
 	Enter a mathematical expression after the "> " symbol.  The result will appear below it.  
 	Ex:
-	> 5+5
-	  10.000000
+	    > 5+5
+	      10.000000
 
 	Spaces will be ignored unless there is no operator between two values.  If there is no operator between what will evaluate to be two values, they are implicitly multiplied.
 	Ex:
-	> 5.0 + 5.0
-	  10.000000
+        > 5.0 + 5.0
+          10.000000
 
-	> 5 5erf(1000)
-	  25.000000
+        > 5 5erf(1000)
+          25.000000
 
-	> 5(-5)
-	  -25.000000
+        > 5(-5)
+          -25.000000
 
-	Numbers placed immediately after a string of text will be interpreted as being part of that text.  Keep this in mind when relying on implicit multiplication.
-	Ex (suppose my_var is a variable equal to 5):
-	> 5my_var
-	  5.000000
+    Numbers placed immediately after a string of text will be interpreted as being part of that text.  Keep this in mind when relying on implicit multiplication.
+    Ex (suppose my_var is a variable equal to 5):
+        > 5my_var
+          25.000000
 
-	> my_var5
-	  Unrecognized token "my_var5"
+        > my_var5
+          Unrecognized token "my_var5"
 
-	> my_var 5
-	  25
+        > my_var 5
+          25
 
 	Program follows order of operations (note that spaces here are used purely for visual clarity).
 	Ex:
-	> 5^3.1^0.2 + 39.2^2 / (2(200-100))
-	  15.207352
+        > 5^3.1^0.2 + 39.2^2 / (2(200-100))
+          15.207352
 
 	A variety of functions are supported (see "SUPPORTED FUNCTIONS" section below).
 	Note that parentheses for single-argument functions are entirely optional.
 	Ex:
         > sin 2
-	  0.909297
+          0.909297
 
-	> sin(2)
-	  0.909297
+        > sin(2)
+          0.909297
 
 
 VARIABLES 
-	Variables are stored values that can be accessed by referencing their name, and are used in an expression as a normal number.
-	Default variables are loaded immediately upon program startup from defaultvars.txt.  This includes common variables such as pi.
-	There can be a maximum of 63 default variables.  
-	Ex:
+    Variables are stored values that can be accessed by referencing their name, and are used in an expression as a normal number.
+    Default variables are loaded immediately upon program startup from defaultvars.txt.  This includes common variables such as pi.
+    There can be a maximum of 63 default variables.  
+    Ex:
         > 2pi/4
           1.570796326794897
 
-	The previous answer can be accessed with "ans"
-	Ex:
+    The previous answer can be accessed with "ans"
+    Ex:
         > ans * 4 / 2
           3.141592653589793
     
-	Variable names can include upper- and lowercase letters, underscores, and numbers, but the first character must be 
+    Variable names can include upper- and lowercase letters, underscores, and numbers, but the first character must be 
 
-	"ls" displays a list of all currently loaded variables, including default and ans.
-	Runtime defined session variables will be supported in the next update.
+    "ls" displays a list of all currently loaded variables, including default and ans.
+    Runtime defined session variables will be supported in the next update.
 
 INCLUDED DEFAULT VARIABLES AND CONSTANTS
-	e          Euler's Number
-	pi         Pi
-	pythag     Pythagoras' constant, sqrt(2)
-	gold       Golden ratio
-	N_A        Avogadro's number
-	k_B        Boltzmann constant
-	e_el       Elementary charge
-	G          Gravitational constant
-	g          Acceleration due to Earth's gravity
-	h_pla      Planck's constant
-	c          Speed of light
-	e_0        Electron permitivity
-	u_0        Magnetic permeability
-	m_e        Mass of Electron
-	m_p        Mass of proton
-	R_gas      Gas constant
+    e          Euler's Number
+    pi         Pi
+    pythag     Pythagoras' constant, sqrt(2)
+    gold       Golden ratio
+    N_A        Avogadro's number
+    k_B        Boltzmann constant
+    e_el       Elementary charge
+    G          Gravitational constant
+    g          Acceleration due to Earth's gravity
+    h_pla      Planck's constant
+    c          Speed of light
+    e_0        Electron permitivity
+    u_0        Magnetic permeability
+    m_e        Mass of Electron
+    m_p        Mass of proton
+    R_gas      Gas constant
     
 
 
@@ -94,17 +94,33 @@ MORE COMMANDS:
     
 
 SUPPORTED OPERATIONS:
-	1 + 2    	Addition
-	1 - 2    	Subtraction
-	- 1      	Negation
-	1 * 2    	Multiplication
-	1 / 2    	Division
-	1 ^ 2    	Exponentiation
+	1 + 2		Addition
+	1 - 2		Subtraction
+	- 1		Negation
+	1 * 2		Multiplication
+	1 / 2		Division
+	1 mod 2		Modulus
+	1 ^ 2		Exponentiation
+
+	1 is 2		Equality
+	1 > 2		Greater than
+	1 >= 2		Greater than or equal to
+	1 < 2		Less than
+	1 <= 2		Less than or equal to
+
+	true and false	Logical and
+	true or false	Logical or
+	true xor false	Logical xor
+	not true	Logical negation
+	true -> false	Logical conditional
+	true iff false	Logical biconditional
+	true <-> false	Logical biconditional
+	true <- false	Logical converse implication
+	
 
 
 SUPPORTED FUNCTIONS:
 	idiv(x,y)   Integer division (x is divided by y)
-	mod(x,y)    Modulo (remainder of x divided by y)
 	gcd(x,y)    Greatest common divisor
 	lcm(x,y)    Least common multiple
 	ceil(x)     Returns smallest integer greater than x
@@ -161,7 +177,7 @@ ERRORS:
 	"Unrecognized token:"
 	One or more unrecognized symbols or words were encountered.  The first of these is shown after the colon.
 	Note that a maximum of nine sequential characters can constitute a token.
- 	Check for failed implicit multiplication (see section "EVALUATING EXPRESSIONS", paragraph 3).
+    Check for failed implicit multiplication (see section "EVALUATING EXPRESSIONS", paragraph 3).
 
 	"Overflow error"
 	The input was too long, or resulted in too many operations or variables.
@@ -169,7 +185,7 @@ ERRORS:
 	"Syntax error"
 	All tokens were recognized, but one or more were used incorrectly.
 
- 	"Undefined or out of bounds"
+	"Undefined or out of bounds"
 	Value's magnitude is too large to be represented, or value is not a (real) number (for instance, ln(0)).
 
 	"Could not load <file name>"

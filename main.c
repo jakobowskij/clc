@@ -44,7 +44,7 @@ typedef enum COMMANDS { CMD_NULL , CMD_QUIT, CMD_SCI, CMD_DEC, CMD_LS };
 #define OUTPUT_DECIMAL 0
 #define OUTPUT_SCIENTIFIC 1
 
-#define NR_FUNCTIONS 59
+#define NR_FUNCTIONS 60
 #define INPUT_HOLDER_SIZE 32
 #define INPUT_SIZE 1024
 #define OUTPUT_SIZE 512
@@ -425,7 +425,7 @@ unsigned char findFunction(char input[]) {
 		"asinh", "acosh", "atanh", "asech", "acsch", "acoth",
 		"sqrt", "ln", "log10", "ceil", "floor", "round", "sgn", "gcd", "lcm", "atan2", "abs", "log2",
 		"cbrt", "trunc", "erf", "erfc", "gamma", "hypot", "lgamma", "sinc", "nsinc", "reqll", "perr", "deg", "rad",
-		"is", "and", "or", "not", "mod", "xor"
+		"is", "and", "or", "not", "mod", "xor", "iff"
 		};
 	int functionOP[NR_FUNCTIONS] = { OP_DIV_INT, OP_MOD, OP_LOG, OP_ROOT,
 		OP_SIN, OP_COS, OP_TAN, OP_SEC, OP_CSC, OP_COT,
@@ -434,7 +434,7 @@ unsigned char findFunction(char input[]) {
 		OP_ASINH, OP_ACOSH, OP_ATANH, OP_ASECH, OP_ACSCH, OP_ACOTH,
 		OP_SQRT, OP_LN, OP_LOG10, OP_CEIL, OP_FLOOR, OP_ROUND, OP_SIGN, OP_GCD, OP_LCM, OP_ATAN2, OP_ABS, OP_LOG2,
 		OP_CBRT, OP_TRUNC, OP_ERF, OP_ERFC, OP_GAMMA, OP_HYPOT, OP_LGAMMA, OP_SINC, OP_NSINC, OP_REQLL, OP_PERR, OP_DEG, OP_RAD,
-		OP_IS, OP_AND, OP_OR, OP_NOT, OP_MOD, OP_XOR
+		OP_IS, OP_AND, OP_OR, OP_NOT, OP_MOD, OP_XOR, OP_IFF
 		};
 
 	for (int i = 0; i < NR_FUNCTIONS; i++) { // function loop
