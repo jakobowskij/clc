@@ -13,91 +13,31 @@ Released under the MIT License.
 #include<stdlib.h>
 #include<stdbool.h>
 
-#define OP_NULL 0
-#define OP_ADD 1
-#define OP_SUB 2
-#define OP_MUL 3
-#define OP_DIV 4
-#define OP_EXP 5
-#define OP_DIV_INT 6
-#define OP_MOD 7
-#define OP_GCD 8
-#define OP_LCM 9
-#define OP_LOG 10
-#define OP_ROOT 11
-#define OP_HYPOT 12
-#define OP_ATAN2 13
-#define OP_REQLL 14
-#define OP_PERR 15
+typedef enum OPERATORS {
+/* basic        */ OP_NULL, OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD, OP_NEG,
+/* equality     */ OP_IS, OP_GREATER_THAN, OP_LESS_THAN, OP_GREATER_THAN_EQUAL_TO, OP_LESS_THAN_EQUAL_TO,
+/* logic        */ OP_AND, OP_OR, OP_NOT, OP_XOR, OP_IMPLIES, OP_IFF, OP_IMPLIED_BY,
+/* bitwise      */ OP_RIGHT_SHIFT, OP_LEFT_SHIFT, OP_BITWISE_AND, OP_BITWISE_OR, OP_BITWISE_NOT, OP_BITWISE_XOR,
+/* powers       */ OP_EXP, END_OPS = OP_EXP, OP_LOG, OP_LOG2, OP_LOG10, OP_LN, OP_ROOT, OP_SQRT, OP_CBRT,
+/* discrete     */ OP_CEIL, UNARY_OPERATORS = OP_CEIL, OP_DIV_INT, OP_GCD, OP_LCM, OP_FLOOR, OP_NCR, OP_NPR, OP_ROUND, OP_TRUNC, OP_SIGN, OP_ABS,
+/* trig         */ OP_SIN, OP_COS, OP_TAN, OP_SEC, OP_CSC, OP_COT, OP_ASIN, OP_ACOS, OP_ATAN, OP_ASEC, OP_ACSC, OP_ACOT,
+/* hyperbolic   */ OP_SINH, OP_COSH, OP_TANH, OP_SECH, OP_CSCH, OP_COTH, OP_ASINH, OP_ACOSH, OP_ATANH, OP_ASECH, OP_ACSCH, OP_ACOTH,
+/* trig-related */ OP_ATAN2, OP_SINC, OP_NSINC, OP_DEG, OP_RAD,
+/* misc         */ OP_HYPOT, OP_REQLL, OP_PERR, OP_ERF, OP_ERFC, OP_GAMMA, OP_LGAMMA,
 
-#define UNARY_OPERATORS 32
-#define OP_CEIL 32
-#define OP_FLOOR 33
-#define OP_ROUND 34
-#define OP_TRUNC 35
-#define OP_SIGN 36
-#define OP_ABS  37
-#define OP_LN 38
-#define OP_LOG10 39
-#define OP_SQRT 40
-#define OP_CBRT 41
-#define OP_SIN 42
-#define OP_COS 43
-#define OP_TAN 44
-#define OP_SEC 45
-#define OP_CSC 46
-#define OP_COT 47
-#define OP_ASIN 48
-#define OP_ACOS 49
-#define OP_ATAN 50
-#define OP_ASEC 51
-#define OP_ACSC 52
-#define OP_ACOT 53
-#define OP_SINH 54
-#define OP_COSH 55
-#define OP_TANH 56
-#define OP_SECH 57
-#define OP_CSCH 58
-#define OP_COTH 59
-#define OP_ASINH 60
-#define OP_ACOSH 61
-#define OP_ATANH 62
-#define OP_ASECH 63
-#define OP_ACSCH 64
-#define OP_ACOTH 65
-#define OP_SINC 66
-#define OP_NSINC 67
-#define OP_ERF 68
-#define OP_ERFC 69
-#define OP_GAMMA 70
-#define OP_LGAMMA 71
-#define OP_DEG 72
-#define OP_RAD 73
-#define OP_LOG2 74
-#define OP_NEG 75
+/* instructions */ INST_ASSIGN_VAL, END_FUNCS = INST_ASSIGN_VAL, INST_JUMP, INST_JUMP_IF_FALSE,
+/* flow         */ ARG_SEPARATOR, LEFT_PARENTH, RIGHT_PARENTH, VAR_BEGIN
+};
 
-#define ARG_SEPARATOR 125
-#define LEFT_PARENTH 126
-#define RIGHT_PARENTH 127
-#define VAR_BEGIN 128
+typedef enum ERRORS { NO_ERROR, ERR_SYNTAX, ERR_OVERFLOW, ERR_UNKNOWN_TOKEN, ERR_UNDEFINED, ERR_OUT_OF_BOUNDS_ANSWER };
 
-#define NO_ERROR 0
-#define ERR_SYNTAX 1
-#define ERR_OVERFLOW 2
-#define ERR_UNKNOWN_TOKEN 3
-#define ERR_UNDEFINED 4
-#define ERR_OUT_OF_BOUNDS_ANSWER 5
+typedef enum COMMANDS { CMD_NULL , CMD_QUIT, CMD_SCI, CMD_DEC, CMD_LS };
 
-#define CMD_NULL 0
-#define CMD_QUIT 1
-#define CMD_SCI 2
-#define CMD_DEC 3
-#define CMD_LS 4
 
 #define OUTPUT_DECIMAL 0
 #define OUTPUT_SCIENTIFIC 1
 
-#define NR_FUNCTIONS 53
+#define NR_FUNCTIONS 59
 #define INPUT_HOLDER_SIZE 32
 #define INPUT_SIZE 1024
 #define OUTPUT_SIZE 512
@@ -108,9 +48,15 @@ Released under the MIT License.
 #define LOAD_VAR_HOLDER_SIZE 128
 #define FILENAME_SIZE 64
 
-#define pi 3.14159265358979323846
+#define pi               3.14159265358979323846
 #define RAD_TO_DEG_CONST 57.29577951308232286465
 #define DEG_TO_RAD_CONST 0.01745329251994329547
+
+typedef struct {
+	double* data;
+	int* size;
+	int dimensions;
+} array;
 
 void resetValues(double variableValues[], unsigned char output[], char rawInput[], char unrecognizedToken[],
 				 double* printVal, int* error, int* numDecimals);
@@ -179,7 +125,7 @@ int main() {
 		else if (command == CMD_LS) {
 			printf("\n  ans =        %.15E\n", userVarVals[0]);
 
-			printf("\n    DEFAULT VARIABLES:\n");
+			printf("\n    CONSTANTS:\n");
 			for (int i = 1; i < SESSION_VAR_START && userVars[i][0] != '\0'; i++) {
 				printf("  %s   ", userVars[i]);
 				
@@ -192,7 +138,7 @@ int main() {
 				printf("%.15E\n", userVarVals[i]);
 			}
 
-			printf("\n    SESSION VARIABLES:\n");
+			printf("\n    VARIABLES:\n");
 			for (int i = SESSION_VAR_START; i < VARIABLE_SIZE && userVars[i][0] != '\0'; i++) {
 				printf("  %s   ", userVars[i]);
 
@@ -429,7 +375,7 @@ bool stackIsEmpty(unsigned char stack[]) {
 
 bool isFunction(unsigned char token) {
 	// Returns true if given operator uses function notation, func(arg1, arg2)
-	return (token > OP_EXP && token < ARG_SEPARATOR);
+	return (token > END_OPS && token < END_FUNCS);
 }
 
 bool isOperator(unsigned char token) {
@@ -439,50 +385,7 @@ bool isOperator(unsigned char token) {
 
 bool isBinaryOperator(unsigned char token) {
 	// Returns true if function or operator has two inputs, false if one
-	return (token < UNARY_OPERATORS);
-} // consider grouping all unary and binary functions/operators separately, so that just one range has to be checked here
-
-void pushOperator(unsigned char token, unsigned char stack[], int* stackLength, unsigned char output[], int* outputLength, int* error) {
-	// Pushes given token and some tokens on stack to the output in such a manner that output is in postfix
-
-	int precedence[7] = {
-		0, // NULL
-		1, // ADD
-		1, // SUB
-		3, // NEG
-		2, // MUL
-		2, // DIV
-		4, // EXP
-	};
-
-	int stackPrecedence = 0; int tokenPrecedence = 0;
-
-	if (stackIsEmpty(stack)) {
-		push(stack, token, stackLength, STACK_SIZE, error);
-		if (*error != NO_ERROR) return;
-	}
-	else {
-		// Push all higher precedence tokens from stack to output, then push current token to stack
-		while (!stackIsEmpty(stack)) {
-			if (isFunction(stack[*stackLength - 1])) {
-				// Functions, being in prefix rather than infix notation, are simply pushed
-				push(output, pop(stack, stackLength), outputLength, OUTPUT_SIZE, error);
-				if (*error != NO_ERROR) return;
-			}
-			else {
-				stackPrecedence = precedence[stack[*stackLength - 1]];
-				tokenPrecedence = precedence[token];
-
-				if ((token != OP_EXP && tokenPrecedence <= stackPrecedence)
-					|| (token == OP_EXP && tokenPrecedence < stackPrecedence)) {
-					push(output, pop(stack, stackLength), outputLength, OUTPUT_SIZE, error);
-					if (*error != NO_ERROR) return;
-				}
-				else break;
-			}
-		}
-		push(stack, token, stackLength, STACK_SIZE, error);
-	}
+	return (token < UNARY_OPERATORS && token != OP_NOT && token != OP_NEG);
 }
 
 long long int doubleToInt(double input) {
@@ -514,14 +417,18 @@ unsigned char findFunction(char input[]) {
 		"sinh", "cosh", "tanh", "sech", "csch", "coth",
 		"asinh", "acosh", "atanh", "asech", "acsch", "acoth",
 		"sqrt", "ln", "log10", "ceil", "floor", "round", "sgn", "gcd", "lcm", "atan2", "abs", "log2",
-		"cbrt", "trunc", "erf", "erfc", "gamma", "hypot", "lgamma", "sinc", "nsinc", "reqll", "perr", "deg", "rad" };
+		"cbrt", "trunc", "erf", "erfc", "gamma", "hypot", "lgamma", "sinc", "nsinc", "reqll", "perr", "deg", "rad",
+		"is", "and", "or", "not", "mod", "xor"
+		};
 	int functionOP[NR_FUNCTIONS] = { OP_DIV_INT, OP_MOD, OP_LOG, OP_ROOT,
 		OP_SIN, OP_COS, OP_TAN, OP_SEC, OP_CSC, OP_COT,
 		OP_ASIN, OP_ACOS, OP_ATAN, OP_ASEC, OP_ACSC, OP_ACOT,
 		OP_SINH, OP_COSH, OP_TANH, OP_SECH, OP_CSCH, OP_COTH,
 		OP_ASINH, OP_ACOSH, OP_ATANH, OP_ASECH, OP_ACSCH, OP_ACOTH,
 		OP_SQRT, OP_LN, OP_LOG10, OP_CEIL, OP_FLOOR, OP_ROUND, OP_SIGN, OP_GCD, OP_LCM, OP_ATAN2, OP_ABS, OP_LOG2,
-		OP_CBRT, OP_TRUNC, OP_ERF, OP_ERFC, OP_GAMMA, OP_HYPOT, OP_LGAMMA, OP_SINC, OP_NSINC, OP_REQLL, OP_PERR, OP_DEG, OP_RAD };
+		OP_CBRT, OP_TRUNC, OP_ERF, OP_ERFC, OP_GAMMA, OP_HYPOT, OP_LGAMMA, OP_SINC, OP_NSINC, OP_REQLL, OP_PERR, OP_DEG, OP_RAD,
+		OP_IS, OP_AND, OP_OR, OP_NOT, OP_MOD, OP_XOR
+		};
 
 	for (int i = 0; i < NR_FUNCTIONS; i++) { // function loop
 		for (int j = 0; j < 10; j++) { // character loop
@@ -645,6 +552,54 @@ unsigned char tokenize(char rawInput[], int* indexPtr, double variableValues[], 
 			(*varValIndex)++;
 		}
 	}
+	else if (currChar == '<') {
+		(*indexPtr)++;
+		currChar = rawInput[*indexPtr];
+
+		if (currChar == '=') {
+			outputToken = OP_LESS_THAN_EQUAL_TO;
+			(*indexPtr)++;
+		}
+		else if (currChar == '-') {
+			(*indexPtr)++;
+			currChar = rawInput[*indexPtr];
+
+			if (currChar == '>') {
+				outputToken == OP_IFF;
+				(*indexPtr)++;
+			}
+			else {
+				outputToken = OP_IMPLIED_BY;
+			}
+		}
+		else {
+			outputToken = OP_LESS_THAN;
+		}
+	}
+	else if (currChar == '>') {
+		(*indexPtr)++;
+		currChar = rawInput[*indexPtr];
+
+		if (currChar == '=') {
+			outputToken = OP_GREATER_THAN_EQUAL_TO;
+			(*indexPtr)++;
+		}
+		else {
+			outputToken = OP_GREATER_THAN;
+		}
+	}
+	else if (currChar == '-') {
+		(*indexPtr)++;
+		currChar = rawInput[*indexPtr];
+
+		if (currChar == '>') {
+			outputToken = OP_IMPLIES;
+			(*indexPtr)++;
+		}
+		else {
+			outputToken = (unaryNegation) ? OP_NEG : OP_SUB;
+		}
+	}
 	else {
 		// If none of the above applied, single character tokens are tested for
 		switch (currChar) {
@@ -666,9 +621,6 @@ unsigned char tokenize(char rawInput[], int* indexPtr, double variableValues[], 
 		case '+':
 			outputToken = OP_ADD;
 			break;
-		case '-':
-			outputToken = (unaryNegation) ? OP_NEG : OP_SUB;
-			break;
 		case '*':
 			outputToken = OP_MUL;
 			break;
@@ -688,6 +640,72 @@ unsigned char tokenize(char rawInput[], int* indexPtr, double variableValues[], 
 	}
 
 	return outputToken;
+}
+
+void pushOperator(unsigned char token, unsigned char stack[], int* stackLength, unsigned char output[], int* outputLength, int* error) {
+	// Pushes given token and some tokens on stack to the output in such a manner that output is in postfix
+
+	int topOfStack = 0;
+
+	int precedence[20] = {
+		0, // NULL
+		7, // ADD
+		7, // SUB
+		8, // MUL
+		8, // DIV
+		8, // MOD
+		9, // NEG
+		5, // IS 
+		6, // GREATER_THAN 
+		6, // LESS_THAN 
+		6, // GREATER_THAN_OR_EQUAL_TO 
+		6, // LESS_THAN_OR_EQUAL_TO
+		3, // AND
+		1, // OR
+		9, // NOT 
+		2, // XOR
+		4, // IMPLIES
+		4, // IFF 
+		4, // IMPLIED BY
+		10,// EXP
+	};
+
+	int stackPrecedence = 0; int tokenPrecedence = 0;
+
+	if (stackIsEmpty(stack)) {
+		push(stack, token, stackLength, STACK_SIZE, error);
+		if (*error != NO_ERROR) return;
+	}
+	else {
+		// Push all higher precedence tokens from stack to output, then push current token to stack
+		while (!stackIsEmpty(stack)) {
+			topOfStack = stack[*stackLength - 1];
+			if (topOfStack < END_FUNCS) {
+				if (topOfStack < END_OPS) {
+					// Operations
+					stackPrecedence = precedence[topOfStack];
+					tokenPrecedence = precedence[token];
+
+					if ((token != OP_EXP && tokenPrecedence <= stackPrecedence)
+						|| (token == OP_EXP && tokenPrecedence < stackPrecedence)) {
+						push(output, pop(stack, stackLength), outputLength, OUTPUT_SIZE, error);
+						if (*error != NO_ERROR) return;
+					}
+					else break;
+				}
+				else {
+					// Functions, being in prefix rather than infix notation, are simply pushed
+					push(output, pop(stack, stackLength), outputLength, OUTPUT_SIZE, error);
+					if (*error != NO_ERROR) return;
+				}
+			}
+			else {
+				// Neither operators nor functions (parentheses and such)
+				break;
+			}
+		}
+		push(stack, token, stackLength, STACK_SIZE, error);
+	}
 }
 
 void inputToRPN(char rawInput[], unsigned char output[], double variableValues[], int* error, char unrecognizedToken[],
@@ -729,7 +747,7 @@ void inputToRPN(char rawInput[], unsigned char output[], double variableValues[]
 			unaryNegation = true;
 			implicitMultiplication = false;
 		}
-		else if (token == OP_NEG) {
+		else if (token == OP_NEG || token == OP_NOT) {
 			// Negation may be applied to number to its right directly after an operator, so cannot pop any operators from stack
 			push(stack, token, &stackLength, STACK_SIZE, error);
 		}
@@ -779,6 +797,12 @@ void inputToRPN(char rawInput[], unsigned char output[], double variableValues[]
 	while (!(stack[0] == 0)) {
 		// Push all remaining operators from stack
 		push(output, pop(stack, &stackLength), &outputLength, OUTPUT_SIZE, error);
+		
+		// TESTING
+		/*for (int i = 0; i < 0; i++) {
+			printf("%d ", output[i]);
+		}*/
+
 		if (*error != NO_ERROR) return;
 	}
 }
@@ -791,7 +815,6 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 	int valueIndexLeft = 0; int valueIndexRight = 0;
 	unsigned char operand = 0;
 	bool binary;
-
 
 	for (int inputIndex = 0; inputIndex < OUTPUT_SIZE; inputIndex++) {
 		if (input[inputIndex] == 0) {
@@ -819,7 +842,6 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 					}
 					else {
 						*error = ERR_SYNTAX;
-						printf("B");
 						return 0.0;
 					}
 				}
@@ -1029,6 +1051,42 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 				case OP_LOG2:
 					variableValues[valueIndexRight] = log2(variableValues[valueIndexRight]);
 					break;
+				case OP_IS:
+					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] == variableValues[valueIndexRight];
+					break;
+				case OP_GREATER_THAN:
+					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] > variableValues[valueIndexRight];
+					break;
+				case OP_GREATER_THAN_EQUAL_TO:
+					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] >= variableValues[valueIndexRight];
+					break;
+				case OP_LESS_THAN:
+					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] < variableValues[valueIndexRight];
+					break;
+				case OP_LESS_THAN_EQUAL_TO:
+					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] <= variableValues[valueIndexRight];
+					break;
+				case OP_AND:
+					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] && variableValues[valueIndexRight];
+					break;
+				case OP_OR:
+					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] || variableValues[valueIndexRight];
+					break;
+				case OP_NOT:
+					variableValues[valueIndexRight] = !(variableValues[valueIndexRight]);
+					break;
+				case OP_XOR:
+					variableValues[valueIndexLeft] = !(variableValues[valueIndexLeft]) != !(variableValues[valueIndexRight]);
+					break;
+				case OP_IMPLIES:
+					variableValues[valueIndexLeft] = !(variableValues[valueIndexLeft]) || variableValues[valueIndexRight];
+					break;
+				case OP_IFF:
+					variableValues[valueIndexLeft] = !(variableValues[valueIndexLeft]) == !(variableValues[valueIndexRight]);
+					break;
+				case OP_IMPLIED_BY:
+					variableValues[valueIndexLeft] = variableValues[valueIndexLeft] && !variableValues[valueIndexRight];
+					break;
 				default:
 					*error = ERR_SYNTAX;
 					return 0.0;
@@ -1056,6 +1114,3 @@ double evaluateRPN(unsigned char input[], double variableValues[], int* error) {
 	}
 	return variableValues[0];
 }
-
-
-
