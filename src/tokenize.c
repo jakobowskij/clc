@@ -1,11 +1,12 @@
-#include<stdio.h>
-#include<math.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include"constants.h"
-#include"auxiliary.h"
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "constants.h"
+#include "auxiliary.h"
 #include "tokenize.h"
 #include "global.h"
+#include "variables.h"
 
 unsigned int tokenize(int* indexPtr, int* evalVarHead, bool unaryNegation, int* keywordState) {
 	// Converts multi-character inputs (such as function names) into their representative tokens

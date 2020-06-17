@@ -42,7 +42,7 @@ int main() {
 	double printVal;  // Value resulting from computation
 	bool scientificNotation = false;
 
-	variableNames[0][0] = 'a'; variableNames[0][1] = 'n'; variableNames[0][2] = 's';
+	variableNames[1][0] = 'a'; variableNames[1][1] = 'n'; variableNames[1][2] = 's';
 	loadVariables(CONST_START, USER_VAR_START, "consts.txt"); // Load constants
 
 	printf("> ");
@@ -89,7 +89,7 @@ int main() {
 				}
 			}
 			if (unrecognizedToken[INPUT_HOLDER_SIZE - 1] != 0) printf("...");
-			printf("\n");
+			printf("\"\n");
 			break;
 		case ERR_OVERFLOW:
 			printf("  Overflow error\n");
